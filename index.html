@@ -26,7 +26,6 @@
             user-select: none;
         }
 
-        /* --- NAVODILA (SIDEBAR) --- */
         .instructions-panel {
             position: fixed;
             right: 40px;
@@ -82,7 +81,6 @@
             }
         }
 
-        /* --- HUD --- */
         .hud-container {
             display: flex;
             gap: 40px;
@@ -148,7 +146,7 @@
         }
         canvas:active { cursor: grabbing; border-color: #4facfe; }
 
-        /* --- KONTROLE --- */
+
         .controls {
             margin-top: 20px;
             display: flex;
@@ -310,7 +308,7 @@
     const finalTimeDisplay = document.getElementById('finalTimeDisplay');
     const winTitle = document.getElementById('winTitle');
 
-    // --- AUDIO CONTEXT (Zvok) ---
+
     const AudioContext = window.AudioContext || window.webkitAudioContext;
     let audioCtx = new AudioContext();
 
@@ -349,7 +347,7 @@
         }
     }
 
-    // --- SPREMENLJIVKE ZA VRTENJE ---
+
     let zRotationAngle = 0;
     let flipAngle = 0;
     let flipAxis = { x: 0, y: 1 }; 
@@ -407,9 +405,8 @@
         }, 400); 
     }
 
-    // --- POPRAVEK: GLOBALNO PREPREČEVANJE AUTO-SCROLLA ---
+
     window.addEventListener('mousedown', function(e) {
-        // Če je pritisnjen sredinski gumb (kolešček - gumb 1), prepreči privzeto obnašanje (puščico)
         if(e.button === 1) {
             e.preventDefault();
         }
@@ -417,7 +414,7 @@
 
     canvas.addEventListener('contextmenu', e => e.preventDefault());
     canvas.addEventListener('mousedown', e => {
-        if (e.button === 1) e.preventDefault(); // Prepreči scroll tudi tukaj za vsak slučaj
+        if (e.button === 1) e.preventDefault();
         
         if (e.button === 0) startRotation(2); 
         else if (e.button === 2) startRotation(-2); 
@@ -451,7 +448,7 @@
         }
     }
 
-    // --- LOGIKA IGRE ---
+
     let cols = 25; 
     let rows = 25;
     let size = canvas.width / cols; 
@@ -468,7 +465,7 @@
     let solutionAnimationTimeout; 
     let solutionUsed = false;
 
-    // ČAS
+ 
     let startTime = 0;
     let timerInterval = null;
     let gameStarted = false; 
