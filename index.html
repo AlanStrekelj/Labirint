@@ -38,7 +38,6 @@
             40%, 60% { transform: translate3d(4px, 0, 0); }
         }
 
-        /* Raketa */
         .rocket-projectile {
             position: fixed;
             font-size: 100px;
@@ -54,7 +53,6 @@
             z-index: 999;
         }
 		
-		/* BEL FLASH */
 		.flash {
 			position: fixed;
 			inset: 0;
@@ -393,7 +391,7 @@
     let audioCtx = new AudioContext();
 
     function createNoiseBuffer() {
-        const bufferSize = audioCtx.sampleRate * 2; // 2 sekundi bufferja
+        const bufferSize = audioCtx.sampleRate * 2;
         const buffer = audioCtx.createBuffer(1, bufferSize, audioCtx.sampleRate);
         const data = buffer.getChannelData(0);
         for (let i = 0; i < bufferSize; i++) {
@@ -929,7 +927,6 @@
 
     document.addEventListener('keydown', (e) => {
         if (isGenerating) return; 
-        // Če je sporočilo odprto ali se vrti animacija rakete, ignoriraj tipke
         if (messageBox.classList.contains('show') || document.querySelector('.rocket-projectile')) return;
         
         if (!solutionUsed && ["ArrowUp", "ArrowDown", "ArrowLeft", "ArrowRight"].includes(e.key)) {
@@ -984,7 +981,6 @@
                 } else {
                      finalTimeDisplay.innerText = "Tvoj čas: " + formatTime(finalTime);
                      
-                     // Preveri rekord
                      const isRecord = checkHighScore(finalTime);
                      
                      if (isRecord) {
@@ -1108,3 +1104,4 @@
 </script>
 </body>
 </html>
+
