@@ -24,12 +24,9 @@
             margin: 0;
             box-sizing: border-box;
             user-select: none;
-            overflow-x: hidden; /* Prepreči drsnike med animacijo */
+            overflow-x: hidden;
         }
-
-        /* --- EFEKTI (NOVO) --- */
-        
-        /* Tresenje zaslona */
+		
         .shake-effect {
             animation: shake 0.5s cubic-bezier(.36,.07,.19,.97) both;
         }
@@ -50,7 +47,6 @@
             filter: drop-shadow(0 0 20px orange);
         }
 
-        /* Delci eksplozije */
         .particle {
             position: fixed;
             pointer-events: none;
@@ -68,7 +64,6 @@
 			pointer-events: none;
 		}
 
-		/* SHOCKWAVE */
 		.shockwave {
 			position: fixed;
 			border: 4px solid rgba(255,255,255,0.8);
@@ -92,7 +87,6 @@
 			text-shadow: 0 0 25px rgba(79,172,254,0.4);
 		}
 
-        /* --- OBSTOJEČI STILI --- */
         .instructions-panel {
             position: fixed;
             right: 40px;
@@ -395,11 +389,9 @@
     const finalTimeDisplay = document.getElementById('finalTimeDisplay');
     const winTitle = document.getElementById('winTitle');
 
-    // --- AUDIO CONTEXT ---
     const AudioContext = window.AudioContext || window.webkitAudioContext;
     let audioCtx = new AudioContext();
 
-    // Funkcija za bel šum (za eksplozijo)
     function createNoiseBuffer() {
         const bufferSize = audioCtx.sampleRate * 2; // 2 sekundi bufferja
         const buffer = audioCtx.createBuffer(1, bufferSize, audioCtx.sampleRate);
@@ -430,7 +422,6 @@
         noiseGain.gain.setValueAtTime(0.5, audioCtx.currentTime);
         noiseGain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 1.5);
         
-        // Padec frekvence za bolj "globok" zvok
         filter.frequency.exponentialRampToValueAtTime(100, audioCtx.currentTime + 1);
 
         noiseSrc.start();
@@ -472,7 +463,6 @@
         }
     }
 
-    // --- ROCKET ANIMATION LOGIC ---
     function triggerRocketSequence(callback) {
 		const rocket = document.createElement('div');
 		rocket.innerText = '🚀';
@@ -482,7 +472,6 @@
 		rocket.style.top = (window.innerHeight + 200) + 'px';
 		document.body.appendChild(rocket);
 
-		// CENTER LABIRINTA
 		const rect = mazeContainer.getBoundingClientRect();
 		const endX = rect.left + rect.width / 2;
 		const endY = rect.top + rect.height / 2;
@@ -569,7 +558,6 @@
 	}
 
 
-    // --- OBSTOJEČA LOGIKA (s popravki) ---
     let zRotationAngle = 0;
     let flipAngle = 0;
     let flipAxis = { x: 0, y: 1 }; 
@@ -805,7 +793,6 @@
         bestTimeDisplay.innerText = best ? formatTime(best) : "--:--";
     }
 
-    // Vrne true, če je nov rekord
     function checkHighScore(finalMs) {
         const key = getStorageKey();
         const currentBest = localStorage.getItem(key);
@@ -815,11 +802,11 @@
             winTitle.innerText = "NOV REKORD! 🏆";
             winTitle.style.color = "#ffd700";
             updateBestTimeDisplay();
-            return true; // Je rekord!
+            return true;
         } else {
             winTitle.innerText = "Čestitke! 🚀";
             winTitle.style.color = "#4facfe";
-            return false; // Ni rekorda
+            return false;
         }
     }
 
@@ -985,7 +972,7 @@
 
             if(player.x === goal.x && player.y === goal.y) {
                 stopTimer();
-                // playSound('win'); // Zmaga zvok predvajamo samo, če NI rakete
+                // playSound('win');
                 const finalTime = Date.now() - startTime;
                 
                 if (solutionUsed) {
@@ -1001,12 +988,10 @@
                      const isRecord = checkHighScore(finalTime);
                      
                      if (isRecord) {
-                         // Če je rekord -> RAKETA!
                          triggerRocketSequence(() => {
                              messageBox.classList.add('show');
                          });
                      } else {
-                         // Če ni rekorda -> Navadno okno
                          playSound('win');
                          setTimeout(() => messageBox.classList.add('show'), 100);
                      }
