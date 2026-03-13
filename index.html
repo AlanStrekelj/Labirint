@@ -25,6 +25,8 @@
             box-sizing: border-box;
             user-select: none;
             overflow-x: hidden;
+			background-repeat: no-repeat;
+			background-attachment: fixed;
         }
 		
         .shake-effect {
@@ -179,7 +181,7 @@
             justify-content: center;
             perspective: 1500px;
             transition: width 0.4s ease, height 0.4s ease;
-            margin: 10px 0;
+            margin: 10px 0 0 0;
             flex-shrink: 0;
         }
 
@@ -565,7 +567,6 @@
 		}
 	}
 
-
     let zRotationAngle = 0;
     let flipAngle = 0;
     let flipAxis = { x: 0, y: 1 }; 
@@ -652,6 +653,7 @@
         mazeContainer.classList.remove('active');
         canvas.style.transition = 'transform 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275)';
         cancelAnimationFrame(rotationFrame);
+		updateMazeMargin(zRotationAngle);
     }
 
     function rotationLoop() {
@@ -990,7 +992,6 @@
                 } else {
                      finalTimeDisplay.innerText = "Tvoj čas: " + formatTime(finalTime);
                      
-                     // Preveri rekord
                      const isRecord = checkHighScore(finalTime);
                      
                      if (isRecord) {
@@ -1109,11 +1110,29 @@
 
 		setTimeout(() => wave.remove(), 800);
 	}
+	
+	function updateMazeMargin(currentAngle) {
+		const canvas = document.getElementById('mazeCanvas'); // Npr. id="platno"
+		const bgName = document.querySelector('.background-name');
+		
+		const baseCanvasMargin = 10;
+		const baseBgNameMargin = 0;
+		
+		const width = canvas.offsetWidth;
+		const height = canvas.offsetHeight;
+		
+		const rad = currentAngle * (Math.PI / 180);
+		
+		const newHeight = width * Math.abs(Math.sin(rad)) + height * Math.abs(Math.cos(rad));
+		
+		const topCanvasOffset = (newHeight - height)/1.4;
+		const topBgOffset = (newHeight - height)/3;
+		
+		canvas.style.marginTop = `${baseCanvasMargin + topCanvasOffset}px`;
+		bgName.style.marginTop = `${baseBgNameMargin + topBgOffset}px`;
+	}
 
     initMaze();
 </script>
 </body>
 </html>
-
-
-
