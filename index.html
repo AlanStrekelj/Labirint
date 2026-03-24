@@ -29,7 +29,19 @@
 			background-attachment: fixed;
         }
 		
-        .shake-effect {
+		body.compact-mode{
+			padding-top: 0;
+		}
+		
+		body.compact-mode .page-title {
+			display: none;
+		}
+		
+		body.compact-mode .game-wrapper {
+			margin-top: 27px;
+		}
+		
+		.shake-effect {
             animation: shake 0.5s cubic-bezier(.36,.07,.19,.97) both;
         }
 
@@ -43,7 +55,7 @@
         .rocket-projectile {
             position: fixed;
             font-size: 100px;
-            z-index: 1000;
+            z-index: 100;
             pointer-events: none;
             filter: drop-shadow(0 0 20px orange);
         }
@@ -52,7 +64,7 @@
             position: fixed;
             pointer-events: none;
             border-radius: 50%;
-            z-index: 999;
+            z-index: 99;
         }
 		
 		.flash {
@@ -60,7 +72,7 @@
 			inset: 0;
 			background: white;
 			opacity: 0;
-			z-index: 2000;
+			z-index: 200;
 			pointer-events: none;
 		}
 
@@ -71,7 +83,7 @@
 			width: 20px;
 			height: 20px;
 			transform: translate(-50%, -50%);
-			z-index: 1500;
+			z-index: 150;
 			pointer-events: none;
 		}
 
@@ -99,8 +111,8 @@
 		
         .instructions-panel {
             position: absolute;
-            right: -36px;
-            top: 50%;
+            right: -106px;
+            top: 55%;
             transform: translateY(-50%);
             background: rgba(255, 255, 255, 0.05);
             padding: 25px;
@@ -137,15 +149,7 @@
         .action-text { font-weight: 700; color: #e3e3e3; margin-bottom: 2px; }
 
         @media (max-width: 1300px) {
-			.instructions-panel, .hud-container {
-				opacity: 0;
-				pointer-events: none;
-				transform: scale(0.9);
-			}
-		}
-		
-		@media (max-width: 1100px) {
-			.controls{
+			.instructions-panel, .hud-container, .controls {
 				opacity: 0;
 				pointer-events: none;
 				transform: scale(0.9);
@@ -154,7 +158,7 @@
 		
         .hud-container {
 			position: absolute;
-			right: -44px;
+			right: -100px;
 			top: -20px;
 			display: flex;
 			gap: 30px;
@@ -221,7 +225,7 @@
 
         .controls {
 			position: absolute;
-			left: 40px;
+			left: -30px;
 			top: 50%;
 			transform: translateY(-50%);
 			display: flex;
@@ -341,6 +345,17 @@
 				<span class="key-icon">🖱️</span>
 				<span class="action-text">Kolešček</span>
 				<span>Ponastavi pogled</span>
+			</div>
+			<div class="instruction-item">
+				<span class="key-icon">⬅️⬆️⬇️➡️</span>
+				<span class="action-text">Premikanje</span>
+				<span>Premikaj se s puščicami</span>
+			</div>
+
+			<div class="instruction-item">
+				<span class="key-icon">🏁</span>
+				<span class="action-text">Cilj</span>
+				<span>Pridi do rakete 🚀</span>
 			</div>
 		</div>
 
@@ -566,6 +581,7 @@
 			update();
 		}
 	}
+
 
     let zRotationAngle = 0;
     let flipAngle = 0;
@@ -990,18 +1006,18 @@
                      playSound('win');
                      setTimeout(() => messageBox.classList.add('show'), 100);
                 } else {
-                     finalTimeDisplay.innerText = "Tvoj čas: " + formatTime(finalTime);
+                    finalTimeDisplay.innerText = "Tvoj čas: " + formatTime(finalTime);
                      
-                     const isRecord = checkHighScore(finalTime);
+                    const isRecord = checkHighScore(finalTime);
                      
-                     if (isRecord) {
-                         triggerRocketSequence(() => {
-                             messageBox.classList.add('show');
-                         });
-                     } else {
-                         playSound('win');
-                         setTimeout(() => messageBox.classList.add('show'), 100);
-                     }
+                    if (isRecord) {
+                        triggerRocketSequence(() => {
+                            messageBox.classList.add('show');
+                        });
+                    } else {
+                        playSound('win');
+                        setTimeout(() => messageBox.classList.add('show'), 100);
+                    }
                 }
             }
         }
@@ -1112,21 +1128,29 @@
 	}
 	
 	function updateMazeMargin(currentAngle) {
-		const canvas = document.getElementById('mazeCanvas'); // Npr. id="platno"
+		const canvas = document.getElementById('mazeCanvas');
 		const bgName = document.querySelector('.background-name');
-		
-		const baseCanvasMargin = 10;
-		const baseBgNameMargin = 0;
 		
 		const width = canvas.offsetWidth;
 		const height = canvas.offsetHeight;
-		
 		const rad = currentAngle * (Math.PI / 180);
 		
 		const newHeight = width * Math.abs(Math.sin(rad)) + height * Math.abs(Math.cos(rad));
 		
-		const topCanvasOffset = (newHeight - height)/1.4;
-		const topBgOffset = (newHeight - height)/3;
+		const requiredHeight = newHeight + 120;
+		
+		if (requiredHeight > window.innerHeight) {
+			document.body.classList.add('compact-mode');
+		} else {
+			document.body.classList.remove('compact-mode');
+		}
+
+		const isCompact = document.body.classList.contains('compact-mode');
+		const baseCanvasMargin = isCompact ? 0 : 10;
+		const baseBgNameMargin = 0;
+		
+		const topCanvasOffset = (newHeight - height) / 1.35;
+		const topBgOffset = (newHeight - height) / 3;
 		
 		canvas.style.marginTop = `${baseCanvasMargin + topCanvasOffset}px`;
 		bgName.style.marginTop = `${baseBgNameMargin + topBgOffset}px`;
