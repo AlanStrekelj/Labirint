@@ -148,14 +148,6 @@
         .key-icon { font-size: 1.5rem; margin-bottom: 5px; color: #ffd700; }
         .action-text { font-weight: 700; color: #e3e3e3; margin-bottom: 2px; }
 
-        @media (max-width: 1300px) {
-			.instructions-panel, .hud-container, .controls {
-				opacity: 0;
-				pointer-events: none;
-				transform: scale(0.9);
-			}
-		}
-		
         .hud-container {
 			position: absolute;
 			right: -100px;
@@ -321,9 +313,30 @@
             gap: 15px;              
         }
         
-        #message.show { opacity: 1; transform: translate(-50%, -50%) scale(1); pointer-events: auto; }
-        #message h2 { margin: 0; color: #4facfe; font-size: 2rem; }
-        #finalTimeDisplay { font-size: 1.2rem; color: #fff; margin: 0; }
+        #message.show {
+			opacity: 1;
+			transform: translate(-50%, -50%) scale(1);
+			pointer-events: auto;
+			
+		}
+        #message h2 {
+			margin: 0;
+			color: #4facfe;
+			font-size: 2rem;
+		}
+		
+        #finalTimeDisplay {
+			font-size: 1.2rem;
+			color: #fff;
+			margin: 0;
+		}
+		
+        @media (max-width: 1300px) {
+			.instructions-panel, .hud-container, .controls {
+				display: none;
+			}
+		}
+		
     </style>
 </head>
 <body>
