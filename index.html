@@ -124,7 +124,11 @@
             box-shadow: 0 15px 35px rgba(0,0,0,0.4);
             transition: opacity 0.3s;
         }
-
+		
+		.tooLow-panel {
+			margin-top: 50px;
+		}
+		
         .instructions-panel h3 {
             margin: 0 0 20px 0;
             color: #4facfe;
@@ -610,11 +614,18 @@
     function changeDifficulty() {
         const select = document.getElementById('difficultySelect');
         const val = parseInt(select.value);
+		const panel = document.querySelector('.instructions-panel');
         select.blur();
         
-        let newSize = 550; 
-        if (val === 25) newSize = 650; 
-        if (val === 40) newSize = 750; 
+        let newSize = 550;
+		panel.classList.add('tooLow-panel');
+        if (val === 25){
+			newSize = 650;
+			panel.classList.remove('tooLow-panel');
+		}else if (val === 40){
+			newSize = 750; 
+			panel.classList.remove('tooLow-panel');
+		}
 
         cols = val;
         rows = val;
